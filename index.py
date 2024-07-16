@@ -10,19 +10,19 @@ def main():
     yz = mx.yz
 
     for x in range(len(xy)):
-        for y in range(len(xy[x])):
+        for y in range(len(xy)):
             if xy[x][y] == 0:
-                for z in range(len(matrix[x][y])):
+                for z in range(len(matrix)):
                     matrix[x][y][z] = 0
 
     for x in range(len(xz)):
-        for z in range(len(xz[x])):
+        for z in range(len(xz)):
             if xz[x][z] == 0:
-                for y in range(len(matrix[x])):
+                for y in range(len(matrix)):
                     matrix[x][y][z] = 0
 
     for y in range(len(yz)):
-        for z in range(len(yz[y])):
+        for z in range(len(yz)):
             if yz[y][z] == 0:
                 for x in range(len(matrix)):
                     matrix[x][y][z] = 0
