@@ -3,6 +3,7 @@ import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d.art3d import Poly3DCollection
 
 
+
 def mostrar(matrix):
     print("\n\n\n")
     for i in range(len(matrix)):
@@ -96,3 +97,8 @@ def mostrar_caras(matrix):
     ax.set_zlim(0, z_dim)
 
     plt.show()
+
+
+def usar_pyvoxels(matrix):
+    voxel_grid = pyvoxels.VoxelGrid(matrix)
+    voxel_grid.plot()

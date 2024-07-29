@@ -30,6 +30,7 @@ def main():
     
     mostrar.mostrar_caras(matrix)
     mostrar.mostrar_puntos(matrix)
+    mostrar.usar_pyvoxels(matrix)
 
 
 if __name__ == "__main__":
