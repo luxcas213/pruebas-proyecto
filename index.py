@@ -29,6 +29,7 @@ def main():
 
     
     mostrar.mostrar_caras(matrix)
+    mostrar.mostrar_puntos(matrix)
 
 
 if __name__ == "__main__":
