@@ -1,7 +1,6 @@
-import mostrar
-import matrix as mx
-
-
+from modelo import mostrar
+from modelo import matrix as mx
+from modelo import save_stl as save
 def main():
     matrix = mx.matrix
 
@@ -28,9 +27,10 @@ def main():
                     matrix[x][y][z] = 0
 
     
-    mostrar.mostrar_caras(matrix)
-    mostrar.mostrar_puntos(matrix)
-    mostrar.usar_pyvoxels(matrix)
+    
+    vertices, faces = save.voxel_to_mesh(matrix)
+    save.save_mesh(vertices, faces, 'output.stl')
+    mostrar.mostrar_voxeles(matrix)
 
 
 if __name__ == "__main__":
