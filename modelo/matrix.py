@@ -1,5 +1,5 @@
 import numpy as np
-n=30
+n=5
 matrix = [[[1 for _ in range(n)] for _ in range(n)] for _ in range(n)]
 
 def create_garba_matrix(n):
@@ -121,20 +121,10 @@ def create_lucas_matrix(n):
     return matrix
 
 
-xy = [[1 if (i > 2 and i < 7 and j > 2 and j < 7) else 0 for j in range(n)] for i in range(n)]
-
-xz = [[1 if (i > 2 and i < 7 and j > 2 and j < 7) else 0 for j in range(n)] for i in range(n)]
-
-yz = [[1 if (i > 2 and i < 7 and j > 2 and j < 7) else 0 for j in range(n)] for i in range(n)]
 
 
+xy =[[1 for _ in range(n)] for _ in range(n)]
 
+xz =[[1 for _ in range(n)] for _ in range(n)]
 
-
-""" xy = create_garba_matrix(30)
-
-xz =  create_lucas_matrix(30)
-
-
-yz =  [[1 for _ in range(n)] for _ in range(n)]
- """
+yz =[[1 for _ in range(n)] for _ in range(n)]
