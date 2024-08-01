@@ -7,23 +7,23 @@ def main():
     xy = mx.xy
     xz = mx.xz
     yz = mx.yz
-
-    for x in range(len(xy)):
-        for y in range(len(xy)):
+    n=mx.n
+    for x in range(n):
+        for y in range(n):
             if xy[x][y] == 0:
-                for z in range(len(matrix)):
+                for z in range(n):
                     matrix[x][y][z] = 0
 
-    for x in range(len(xz)):
-        for z in range(len(xz)):
+    for x in range(n):
+        for z in range(n):
             if xz[x][z] == 0:
-                for y in range(len(matrix)):
+                for y in range(n):
                     matrix[x][y][z] = 0
 
-    for y in range(len(yz)):
-        for z in range(len(yz)):
+    for y in range(n):
+        for z in range(n):
             if yz[y][z] == 0:
-                for x in range(len(matrix)):
+                for x in range(n):
                     matrix[x][y][z] = 0
 
     
