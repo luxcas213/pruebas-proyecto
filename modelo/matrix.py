@@ -121,22 +121,12 @@ def create_lucas_matrix(n):
     return matrix
 
 
+def cuadrado(n):
+    x = [[1 for _ in range(n)] for _ in range(n)]
+    return x
 
+xy = cuadrado(n)
 
-xy =[[0,0,1,0,0],
-     [0,1,1,1,0],
-     [1,1,1,1,1],
-     [0,1,1,1,0],
-     [0,0,1,0,0]]
+xz =cuadrado(n)
 
-xz =[[0,0,1,0,0],
-     [0,1,1,1,0],
-     [1,1,1,1,1],
-     [0,1,1,1,0],
-     [0,0,1,0,0]]
-
-yz =[[0,0,1,0,0],
-     [0,1,1,1,0],
-     [1,1,1,1,1],
-     [0,1,1,1,0],
-     [0,0,1,0,0]]
+yz =cuadrado(n)
