@@ -1,9 +1,9 @@
 import numpy as np
 from stl import mesh
 import os
+from scipy.spatial import ConvexHull
 
 def create_voxel_mesh(x, y, z, size=1.0):
-    
     vertices = np.array([
         [x, y, z],
         [x + size, y, z],
@@ -14,7 +14,6 @@ def create_voxel_mesh(x, y, z, size=1.0):
         [x + size, y + size, z + size],
         [x, y + size, z + size]
     ])
-    
     
     faces = np.array([
         [0, 1, 2],
@@ -43,7 +42,6 @@ def voxel_to_mesh(voxel_matrix):
         for y in range(voxel_matrix.shape[1]):
             for z in range(voxel_matrix.shape[2]):
                 if voxel_matrix[x, y, z]:
-                    
                     voxel_vertices, voxel_faces = create_voxel_mesh(x, y, z)
                     vertex_offset = len(all_vertices)
                     all_vertices.extend(voxel_vertices)
@@ -57,7 +55,6 @@ def voxel_to_mesh(voxel_matrix):
     return all_vertices, all_faces
 
 def save_mesh(vertices, faces, filename):
-
     mesh_data = mesh.Mesh(np.zeros(faces.shape[0], dtype=mesh.Mesh.dtype))
     
     for i, face in enumerate(faces):
@@ -68,4 +65,9 @@ def save_mesh(vertices, faces, filename):
     full_path = os.path.join(downloads_path, filename)
     mesh_data.save(full_path)
     print(f'Mesh saved to {full_path}')
+
+def simplify_mesh_max(vertices, faces):
+    hull = ConvexHull(vertices)
+    simplified_faces = hull.simplices
+    return vertices, simplified_faces
 

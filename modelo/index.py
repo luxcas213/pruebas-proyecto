@@ -57,6 +57,7 @@ def main():
 
     matrix = optimizarMatrix(matrix)
     vertices, faces = save.voxel_to_mesh(matrix)
+    #vertices, faces = save.simplify_mesh_max(vertices, faces)
     save.save_mesh(vertices, faces, 'output.stl')
     mostrar.mostrar_voxeles(matrix)
 
