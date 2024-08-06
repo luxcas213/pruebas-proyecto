@@ -39,6 +39,7 @@ def voxel_to_mesh(voxel_matrix):
     uso el gready meshing para simplificar la matrix de voxeles y generar un mesh
     """
     voxel_matrix = np.array(voxel_matrix, dtype=bool)
+
     voxel_procesed = np.zeros_like(voxel_matrix,dtype=bool)
     all_vertices = []
     all_faces = []
@@ -53,16 +54,19 @@ def voxel_to_mesh(voxel_matrix):
                         if not voxel_matrix[i, y, z] and not voxel_procesed[i, y, z]:
                             break
                         voxel_procesed[i, y, z] = True
+                        voxel_matrix[i, y, z] = False
                         size_x += 1
                     for j in range(y + 1, n):
                         if not voxel_matrix[x:x + size_x, j, z].all() and not voxel_procesed[x:x + size_x, j, z].all():
                             break
                         voxel_procesed[x:x + size_x, j, z] = True
+                        voxel_matrix[x:x + size_x, j, z] = 0
                         size_y += 1
                     for k in range(z + 1, n):
                         if not voxel_matrix[x:x + size_x, y:y + size_y, k].all() and not voxel_procesed[x:x + size_x, y:y + size_y, k].all():
                             break
                         voxel_procesed[x:x + size_x, y:y + size_y, k] = True
+                        voxel_matrix[x:x + size_x, y:y + size_y, k] = 0
                         size_z += 1
                     voxel_vertices, voxel_faces = create_voxel_mesh(x, y, z, size_x, size_y, size_z)
                     vertex_offset = len(all_vertices)

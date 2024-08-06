@@ -54,7 +54,7 @@ def main():
                 for x in range(n):
                     matrix[x][y][z] = 0
 
-    print(matrix)
+    
     #matrix = optimizarMatrix(matrix)
     vertices, faces = save.voxel_to_mesh(matrix)
     save.save_mesh(vertices, faces, 'output.stl')

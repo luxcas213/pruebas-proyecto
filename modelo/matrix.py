@@ -1,5 +1,5 @@
 import numpy as np
-n=5
+n=2
 matrix = [[[1 for _ in range(n)] for _ in range(n)] for _ in range(n)]
 
 def create_garba_matrix(n):
@@ -148,4 +148,4 @@ xy =cuadrado(n)
 xz =cuadrado(n)
 
 yz =cuadrado(n)
-    
+
