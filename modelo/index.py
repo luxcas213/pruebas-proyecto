@@ -1,7 +1,7 @@
 from modelo import mostrar
 from modelo import matrix as mx
 from modelo import save_stl as save
-import copy
+import copy  
 
 def tieneVecinoCero(x, y, z, matrix):
     n = len(matrix)
@@ -54,10 +54,9 @@ def main():
                 for x in range(n):
                     matrix[x][y][z] = 0
 
-
-    matrix = optimizarMatrix(matrix)
+    print(matrix)
+    #matrix = optimizarMatrix(matrix)
     vertices, faces = save.voxel_to_mesh(matrix)
-    #vertices, faces = save.simplify_mesh_max(vertices, faces)
     save.save_mesh(vertices, faces, 'output.stl')
     mostrar.mostrar_voxeles(matrix)
 

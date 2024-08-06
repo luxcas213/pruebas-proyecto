@@ -125,8 +125,27 @@ def cuadrado(n):
     x = [[1 for _ in range(n)] for _ in range(n)]
     return x
 
-xy = cuadrado(n)
+def circulo(n):
+    x = [[0 for _ in range(n)] for _ in range(n)]
+    for i in range(n):
+        for j in range(n):
+            if (i - n//2)**2 + (j - n//2)**2 <= (n//2)**2:
+                x[i][j] = 1
+    return x
+
+def triangulo(n):
+    x = [[0 for _ in range(n)] for _ in range(n)]
+    for i in range(n):
+        for j in range(n):
+            if i <= n//2 and j <= i and j >= n//2 - i:
+                x[i][j] = 1
+            elif i > n//2 and j >= i - n//2 and j <= n - i + n//2 - 1:
+                x[i][j] = 1
+    return x
+
+xy =cuadrado(n)
 
 xz =cuadrado(n)
 
 yz =cuadrado(n)
+    
