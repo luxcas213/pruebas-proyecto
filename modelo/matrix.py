@@ -1,5 +1,5 @@
 import numpy as np
-n=2
+n=3
 matrix = [[[1 for _ in range(n)] for _ in range(n)] for _ in range(n)]
 
 def create_garba_matrix(n):
@@ -143,7 +143,7 @@ def triangulo(n):
                 x[i][j] = 1
     return x
 
-xy =cuadrado(n)
+xy = [[1,1,1],[1,0,1],[1,1,1]]
 
 xz =cuadrado(n)
 

@@ -39,7 +39,6 @@ def voxel_to_mesh(voxel_matrix):
     uso el gready meshing para simplificar la matrix de voxeles y generar un mesh
     """
     voxel_matrix = np.array(voxel_matrix, dtype=bool)
-
     voxel_procesed = np.zeros_like(voxel_matrix,dtype=bool)
     all_vertices = []
     all_faces = []
@@ -79,6 +78,27 @@ def voxel_to_mesh(voxel_matrix):
     all_vertices = np.array(all_vertices)
     
     return all_vertices, all_faces
+def armodoscubos():
+    all_vertices = []
+    all_faces = []
+    voxel_vertices, voxel_faces = create_voxel_mesh(0,0,0,3,2,2)
+    vertex_offset = len(all_vertices)
+    all_vertices.extend(voxel_vertices)
+    
+    for face in voxel_faces:
+        all_faces.append(face + vertex_offset)
+    
+    voxel_vertices, voxel_faces = create_voxel_mesh(3,0,0,1,3,2)
+    vertex_offset = len(all_vertices)
+    all_vertices.extend(voxel_vertices)
+    
+    for face in voxel_faces:
+        all_faces.append(face + vertex_offset)
+    
+    
+    all_faces = np.array(all_faces)
+    all_vertices = np.array(all_vertices)
+    save_mesh(all_vertices, all_faces, 'cubos.stl')
 
 def save_mesh(vertices, faces, filename):
     #armo el mesh
@@ -96,3 +116,5 @@ def save_mesh(vertices, faces, filename):
     print(f'Mesh saved to {full_path}')
 
 
+if __name__ == '__main__':
+    armodoscubos()
