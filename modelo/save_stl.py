@@ -47,23 +47,26 @@ def voxel_to_mesh(voxel_matrix):
         for y in range(n):
             for z in range(n):
                 if voxel_matrix[x, y, z] and not voxel_procesed[x, y, z]:
+                    print(f'Processing voxel at ({x}, {y}, {z})')
                     voxel_procesed[x][y][z] = True
                     size_x = size_y = size_z = 1
+                    print(f'size_x: {size_x}, size_y: {size_y}, size_z: {size_z}')
                     for i in range(x + 1, n):
-                        if not voxel_matrix[i, y, z] and not voxel_procesed[i, y, z]:
+                        if not voxel_matrix[i, y, z] or voxel_procesed[i, y, z]:
                             break
                         voxel_procesed[i, y, z] = True
                         size_x += 1
                     for j in range(y + 1, n):
-                        if not voxel_matrix[x:x + size_x, j, z].all() and not voxel_procesed[x:x + size_x, j, z].all():
+                        if not voxel_matrix[x:x + size_x, j, z].all() or voxel_procesed[x:x + size_x, j, z].all():
                             break
                         voxel_procesed[x:x + size_x, j, z] = True
                         size_y += 1
                     for k in range(z + 1, n):
-                        if not voxel_matrix[x:x + size_x, y:y + size_y, k].all() and not voxel_procesed[x:x + size_x, y:y + size_y, k].all():
+                        if not voxel_matrix[x:x + size_x, y:y + size_y, k].all() or voxel_procesed[x:x + size_x, y:y + size_y, k].all():
                             break
                         voxel_procesed[x:x + size_x, y:y + size_y, k] = True
                         size_z += 1
+                    print(f'Voxel at ({x}, {y}, {z}) with size ({size_x}, {size_y}, {size_z})')
                     voxel_vertices, voxel_faces = create_voxel_mesh(x, y, z, size_x, size_y, size_z)
                     vertex_offset = len(all_vertices)
                     all_vertices.extend(voxel_vertices)
