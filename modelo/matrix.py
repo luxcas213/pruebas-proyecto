@@ -143,7 +143,7 @@ def triangulo(n):
                 x[i][j] = 1
     return x
 
-xy =cuadrado(n)
+xy = [[1,1,1],[1,0,1],[1,1,1]]
 
 xz =triangulo(n)
 

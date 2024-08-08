@@ -55,16 +55,19 @@ def voxel_to_mesh(voxel_matrix):
                         if not voxel_matrix[i, y, z] or voxel_procesed[i, y, z]:
                             break
                         voxel_procesed[i, y, z] = True
+                        voxel_matrix[i, y, z] = False
                         size_x += 1
                     for j in range(y + 1, n):
                         if not voxel_matrix[x:x + size_x, j, z].all() or voxel_procesed[x:x + size_x, j, z].all():
                             break
                         voxel_procesed[x:x + size_x, j, z] = True
+                        voxel_matrix[x:x + size_x, j, z] = 0
                         size_y += 1
                     for k in range(z + 1, n):
                         if not voxel_matrix[x:x + size_x, y:y + size_y, k].all() or voxel_procesed[x:x + size_x, y:y + size_y, k].all():
                             break
                         voxel_procesed[x:x + size_x, y:y + size_y, k] = True
+                        voxel_matrix[x:x + size_x, y:y + size_y, k] = 0
                         size_z += 1
                     print(f'Voxel at ({x}, {y}, {z}) with size ({size_x}, {size_y}, {size_z})')
                     voxel_vertices, voxel_faces = create_voxel_mesh(x, y, z, size_x, size_y, size_z)
@@ -78,6 +81,27 @@ def voxel_to_mesh(voxel_matrix):
     all_vertices = np.array(all_vertices)
     
     return all_vertices, all_faces
+def armodoscubos():
+    all_vertices = []
+    all_faces = []
+    voxel_vertices, voxel_faces = create_voxel_mesh(0,0,0,3,2,2)
+    vertex_offset = len(all_vertices)
+    all_vertices.extend(voxel_vertices)
+    
+    for face in voxel_faces:
+        all_faces.append(face + vertex_offset)
+    
+    voxel_vertices, voxel_faces = create_voxel_mesh(3,0,0,1,3,2)
+    vertex_offset = len(all_vertices)
+    all_vertices.extend(voxel_vertices)
+    
+    for face in voxel_faces:
+        all_faces.append(face + vertex_offset)
+    
+    
+    all_faces = np.array(all_faces)
+    all_vertices = np.array(all_vertices)
+    save_mesh(all_vertices, all_faces, 'cubos.stl')
 
 def save_mesh(vertices, faces, filename):
     #armo el mesh
@@ -95,3 +119,5 @@ def save_mesh(vertices, faces, filename):
     print(f'Mesh saved to {full_path}')
 
 
+if __name__ == '__main__':
+    armodoscubos()

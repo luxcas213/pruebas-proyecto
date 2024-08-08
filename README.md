@@ -11,3 +11,4 @@ pip install -r requirements.txt
 para runear:
 
 python -m modelo.index
+
