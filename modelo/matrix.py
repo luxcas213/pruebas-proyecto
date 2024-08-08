@@ -1,5 +1,5 @@
 import numpy as np
-n=30
+n=100
 matrix = [[[1 for _ in range(n)] for _ in range(n)] for _ in range(n)]
 
 def create_garba_matrix(n):
@@ -10,7 +10,7 @@ def create_garba_matrix(n):
     # Matrices 5x5 para cada letra
     G = np.array([
         [0, 1, 1, 1, 0],
-        [1, 0, 0, 0, 1],
+        [1, 0, 0, 0, 0],
         [1, 0, 1, 1, 0],
         [1, 0, 0, 0, 1],
         [0, 1, 1, 1, 0]
@@ -132,7 +132,6 @@ def circulo(n):
             if (i - n//2)**2 + (j - n//2)**2 <= (n//2)**2:
                 x[i][j] = 1
     return x
-
 def triangulo(n):
     x = [[0 for _ in range(n)] for _ in range(n)]
     for i in range(n):
@@ -143,9 +142,9 @@ def triangulo(n):
                 x[i][j] = 1
     return x
 
-xy = [[1,1,1],[1,0,1],[1,1,1]]
+xy = cuadrado(n)
 
-xz =triangulo(n)
+xz =cuadrado(n)
 
-yz =triangulo(n)
+yz =create_garba_matrix(n)
     

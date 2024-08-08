@@ -17,8 +17,8 @@ def create_voxel_mesh(x, y, z, size_x,size_y,size_z):
     
     #asigno que trios de vertices generan un triangulo de cara
     faces = np.array([
-        [0, 1, 2],
-        [0, 2, 3],
+        [2, 1, 0],
+        [3, 2, 0],
         [4, 5, 6],
         [4, 6, 7],
         [0, 1, 5],
@@ -39,6 +39,7 @@ def voxel_to_mesh(voxel_matrix):
     uso el gready meshing para simplificar la matrix de voxeles y generar un mesh
     """
     voxel_matrix = np.array(voxel_matrix, dtype=bool)
+    
     voxel_procesed = np.zeros_like(voxel_matrix,dtype=bool)
     all_vertices = []
     all_faces = []
