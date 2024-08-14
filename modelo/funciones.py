@@ -39,7 +39,7 @@ def create_voxel_mesh(x: int, y: int, z: int, size_x: int, size_y: int, size_z: 
     
     return vertices, faces
 
-def voxel_to_mesh(voxel_matrix: np.ndarray) -> tuple[np.ndarray, np.ndarray]:
+def voxel_to_mesh(voxel_matrix: np.ndarray):
     
     """
     Uso el gready meshing para simplificar la matriz de voxeles y generar un mesh
@@ -87,7 +87,7 @@ def voxel_to_mesh(voxel_matrix: np.ndarray) -> tuple[np.ndarray, np.ndarray]:
     all_faces = np.array(all_faces)
     all_vertices = np.array(all_vertices)
     
-    return all_vertices, all_faces
+    save_mesh(all_vertices, all_faces, 'output.stl')
 
 def createMatrix(xy: List[List[int]], xz: List[List[int]], yz: List[List[int]], n: int) -> List[List[List[int]]]:
     matrix = [[[1 for _ in range(n)] for _ in range(n)] for _ in range(n)]
@@ -170,3 +170,23 @@ def mostrar_voxeles(matrix, umbral=0.5):
     ax.set_zlabel('Z')
 
     plt.show()
+
+
+def generar_matriz_booleana_aleatoria(n:int) -> np.ndarray:
+    # Generar una matriz booleana 3D con valores aleatorios
+    matriz = np.random.choice([True, False], size=(n, n, n))
+    return matriz
+
+def generar_prisma_triangular(n:int) -> np.ndarray:
+    # Crear una matriz booleana 3D de n*n*n inicializada a False
+    matriz = np.zeros((n, n, n), dtype=bool)
+
+    # Definir las dimensiones del prisma triangular
+    for z in range(n):  # Extender el triángulo a lo largo del eje Z
+        for x in range(n):
+            for y in range(n):
+                # Condición para un triángulo rectángulo en la mitad inferior del plano XY
+                if y < n - x:
+                    matriz[x, y, z] = True
+
+    return matriz
