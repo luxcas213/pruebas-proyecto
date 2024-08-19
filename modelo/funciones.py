@@ -6,7 +6,30 @@ from typing import List
 import copy  
 import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
+from typing import List, Tuple
 
+
+def newcubegraph() -> Tuple[List[List[int]] , List[Tuple[int, int, int]]]:
+    vertices=[[0,0,0],[0,0,1],[0,1,0],[0,1,1],[1,0,0],[1,0,1],[1,1,0],[1,1,1]]
+
+    conecciones=[[2,3,5],[1,6,4],[1,4,7],[3,8,3],[1,6,7],[2,5,8],[3,5,8],[4,7,6]]
+
+    return conecciones,vertices
+
+
+
+
+def GenerarMeshFromGraph(graph):
+    vertices = graph[1]
+    connections = graph[0]
+    
+    all_vertices = []
+    all_faces = []
+    
+    all_faces = np.array(all_faces)
+    all_vertices = np.array(vertices)
+    
+    save_mesh(all_vertices, all_faces, 'output.stl')
 
 def create_voxel_mesh(x: int, y: int, z: int, size_x: int, size_y: int, size_z: int) -> tuple[np.ndarray, np.ndarray]:
     # creo los vertices desde la pocicion inicial hasta el tamaño del rectángulo
@@ -190,3 +213,4 @@ def generar_prisma_triangular(n:int) -> np.ndarray:
                     matriz[x, y, z] = True
 
     return matriz
+

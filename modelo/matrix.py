@@ -1,125 +1,326 @@
 import numpy as np
-n=100
+n=150
 matrix = [[[1 for _ in range(n)] for _ in range(n)] for _ in range(n)]
 
-def create_garba_matrix(n):
-    # Asegurarse de que n sea lo suficientemente grande
-    if n < 27:
-        raise ValueError("n debe ser al menos 27 para contener la palabra 'Garba' con espacios entre letras")
 
-    # Matrices 5x5 para cada letra
-    G = np.array([
-        [0, 1, 1, 1, 0],
-        [1, 0, 0, 0, 0],
-        [1, 0, 1, 1, 0],
-        [1, 0, 0, 0, 1],
-        [0, 1, 1, 1, 0]
-    ])
-
-    A = np.array([
+letter_matrices = {
+    'A': np.array([
         [0, 1, 1, 1, 0],
         [1, 0, 0, 0, 1],
         [1, 1, 1, 1, 1],
         [1, 0, 0, 0, 1],
         [1, 0, 0, 0, 1]
-    ])
-
-    R = np.array([
+    ]),
+    'B': np.array([
+        [1, 1, 1, 1, 0],
+        [1, 0, 0, 0, 1],
+        [1, 1, 1, 1, 0],
+        [1, 0, 0, 0, 1],
+        [1, 1, 1, 1, 0]
+    ]),
+    'C': np.array([
+        [0, 1, 1, 1, 0],
+        [1, 0, 0, 0, 1],
+        [1, 0, 0, 0, 0],
+        [1, 0, 0, 0, 1],
+        [0, 1, 1, 1, 0]
+    ]),
+    'D': np.array([
+        [1, 1, 1, 0, 0],
+        [1, 0, 0, 1, 0],
+        [1, 0, 0, 0, 1],
+        [1, 0, 0, 1, 0],
+        [1, 1, 1, 0, 0]
+    ]),
+    'E': np.array([
+        [1, 1, 1, 1, 1],
+        [1, 0, 0, 0, 0],
+        [1, 1, 1, 1, 0],
+        [1, 0, 0, 0, 0],
+        [1, 1, 1, 1, 1]
+    ]),
+    'F': np.array([
+        [1, 1, 1, 1, 1],
+        [1, 0, 0, 0, 0],
+        [1, 1, 1, 1, 0],
+        [1, 0, 0, 0, 0],
+        [1, 0, 0, 0, 0]
+    ]),
+    'G': np.array([
+        [0, 1, 1, 1, 0],
+        [1, 0, 0, 0, 0],
+        [1, 0, 1, 1, 1],
+        [1, 0, 0, 0, 1],
+        [0, 1, 1, 1, 1]
+    ]),
+    'H': np.array([
+        [1, 0, 0, 0, 1],
+        [1, 0, 0, 0, 1],
+        [1, 1, 1, 1, 1],
+        [1, 0, 0, 0, 1],
+        [1, 0, 0, 0, 1]
+    ]),
+    'I': np.array([
+        [1, 1, 1, 1, 1],
+        [0, 0, 1, 0, 0],
+        [0, 0, 1, 0, 0],
+        [0, 0, 1, 0, 0],
+        [1, 1, 1, 1, 1]
+    ]),
+    'J': np.array([
+        [1, 1, 1, 1, 1],
+        [0, 0, 0, 1, 0],
+        [0, 0, 0, 1, 0],
+        [1, 0, 0, 1, 0],
+        [0, 1, 1, 0, 0]
+    ]),
+    'K': np.array([
+        [1, 0, 0, 0, 1],
+        [1, 0, 0, 1, 0],
+        [1, 1, 1, 0, 0],
+        [1, 0, 0, 1, 0],
+        [1, 0, 0, 0, 1]
+    ]),
+    'L': np.array([
+        [1, 0, 0, 0, 0],
+        [1, 0, 0, 0, 0],
+        [1, 0, 0, 0, 0],
+        [1, 0, 0, 0, 0],
+        [1, 1, 1, 1, 1]
+    ]),
+    'M': np.array([
+        [1, 0, 0, 0, 1],
+        [1, 1, 0, 1, 1],
+        [1, 0, 1, 0, 1],
+        [1, 0, 0, 0, 1],
+        [1, 0, 0, 0, 1]
+    ]),
+    'N': np.array([
+        [1, 0, 0, 0, 1],
+        [1, 1, 0, 0, 1],
+        [1, 0, 1, 0, 1],
+        [1, 0, 0, 1, 1],
+        [1, 0, 0, 0, 1]
+    ]),
+    'O': np.array([
+        [0, 1, 1, 1, 0],
+        [1, 0, 0, 0, 1],
+        [1, 0, 0, 0, 1],
+        [1, 0, 0, 0, 1],
+        [0, 1, 1, 1, 0]
+    ]),
+    'P': np.array([
+        [1, 1, 1, 1, 0],
+        [1, 0, 0, 0, 1],
+        [1, 1, 1, 1, 0],
+        [1, 0, 0, 0, 0],
+        [1, 0, 0, 0, 0]
+    ]),
+    'Q': np.array([
+        [0, 1, 1, 1, 0],
+        [1, 0, 0, 0, 1],
+        [1, 0, 0, 0, 1],
+        [1, 0, 1, 0, 1],
+        [0, 1, 1, 1, 1]
+    ]),
+    'R': np.array([
         [1, 1, 1, 1, 0],
         [1, 0, 0, 0, 1],
         [1, 1, 1, 1, 0],
         [1, 0, 1, 0, 0],
         [1, 0, 0, 1, 0]
-    ])
-
-    B = np.array([
-        [1, 1, 1, 1, 0],
-        [1, 0, 0, 0, 1],
-        [1, 1, 1, 1, 0],
-        [1, 0, 0, 0, 1],
-        [1, 1, 1, 1, 0]
-    ])
-
-    # Matriz de espacio entre letras
-    space = np.zeros((5, 1))
-
-    # Combinamos las letras con espacios en una sola matriz
-    garba = np.concatenate((G, space, A, space, R, space, B, space, A), axis=1)
-
-    # Crear una matriz n x n de ceros
-    matrix = np.zeros((n, n), dtype=int)
-
-    # Colocar la palabra "Garba" en el centro de la matriz n x n
-    start_row = (n - 5) // 2
-    start_col = (n - garba.shape[1]) // 2
-
-    matrix[start_row:start_row+5, start_col:start_col+garba.shape[1]] = garba
-   
-    return matrix
-
-def create_lucas_matrix(n):
-    # Asegurarse de que n sea lo suficientemente grande
-    if n < 27:
-        raise ValueError("n debe ser al menos 27 para contener la palabra 'Lucas' con espacios entre letras")
-
-    # Matrices 5x5 para cada letra
-    L = np.array([
-        [1, 0, 0, 0, 0],
-        [1, 0, 0, 0, 0],
-        [1, 0, 0, 0, 0],
-        [1, 0, 0, 0, 0],
-        [1, 1, 1, 1, 0]
-    ])
-
-    U = np.array([
-        [1, 0, 0, 0, 1],
-        [1, 0, 0, 0, 1],
-        [1, 0, 0, 0, 1],
-        [1, 0, 0, 0, 1],
-        [0, 1, 1, 1, 0]
-    ])
-
-    C = np.array([
-        [0, 1, 1, 1, 0],
-        [1, 0, 0, 0, 1],
-        [1, 0, 0, 0, 0],
-        [1, 0, 0, 0, 1],
-        [0, 1, 1, 1, 0]
-    ])
-
-    A = np.array([
-        [0, 1, 1, 1, 0],
-        [1, 0, 0, 0, 1],
-        [1, 1, 1, 1, 1],
-        [1, 0, 0, 0, 1],
-        [1, 0, 0, 0, 1]
-    ])
-
-    S = np.array([
+    ]),
+    'S': np.array([
         [0, 1, 1, 1, 1],
         [1, 0, 0, 0, 0],
         [0, 1, 1, 1, 0],
         [0, 0, 0, 0, 1],
         [1, 1, 1, 1, 0]
+    ]),
+    'T': np.array([
+        [1, 1, 1, 1, 1],
+        [0, 0, 1, 0, 0],
+        [0, 0, 1, 0, 0],
+        [0, 0, 1, 0, 0],
+        [0, 0, 1, 0, 0]
+    ]),
+    'U': np.array([
+        [1, 0, 0, 0, 1],
+        [1, 0, 0, 0, 1],
+        [1, 0, 0, 0, 1],
+        [1, 0, 0, 0, 1],
+        [0, 1, 1, 1, 0]
+    ]),
+    'V': np.array([
+        [1, 0, 0, 0, 1],
+        [1, 0, 0, 0, 1],
+        [1, 0, 0, 0, 1],
+        [0, 1, 0, 1, 0],
+        [0, 0, 1, 0, 0]
+    ]),
+    'W': np.array([
+        [1, 0, 0, 0, 1],
+        [1, 0, 0, 0, 1],
+        [1, 0, 1, 0, 1],
+        [1, 1, 0, 1, 1],
+        [1, 0, 0, 0, 1]
+    ]),
+    'X': np.array([
+        [1, 0, 0, 0, 1],
+        [0, 1, 0, 1, 0],
+        [0, 0, 1, 0, 0],
+        [0, 1, 0, 1, 0],
+        [1, 0, 0, 0, 1]
+    ]),
+    'Y': np.array([
+        [1, 0, 0, 0, 1],
+        [0, 1, 0, 1, 0],
+        [0, 0, 1, 0, 0],
+        [0, 0, 1, 0, 0],
+        [0, 0, 1, 0, 0]
+    ]),
+    'Z': np.array([
+        [1, 1, 1, 1, 1],
+        [0, 0, 0, 1, 0],
+        [0, 0, 1, 0, 0],
+        [0, 1, 0, 0, 0],
+        [1, 1, 1, 1, 1]
+    ]),
+    '0': np.array([
+        [0, 1, 1, 1, 0],
+        [1, 0, 0, 0, 1],
+        [1, 0, 1, 0, 1],
+        [1, 0, 0, 0, 1],
+        [0, 1, 1, 1, 0]
+    ]),
+    '1': np.array([
+        [0, 0, 1, 0, 0],
+        [0, 1, 1, 0, 0],
+        [1, 0, 1, 0, 0],
+        [0, 0, 1, 0, 0],
+        [1, 1, 1, 1, 1]
+    ]),
+    '2': np.array([
+        [0, 1, 1, 1, 0],
+        [1, 0, 0, 0, 1],
+        [0, 0, 1, 1, 0],
+        [0, 1, 0, 0, 0],
+        [1, 1, 1, 1, 1]
+    ]),
+    '3': np.array([
+        [0, 1, 1, 1, 0],
+        [1, 0, 0, 0, 1],
+        [0, 0, 1, 1, 0],
+        [1, 0, 0, 0, 1],
+        [0, 1, 1, 1, 0]
+    ]),
+    '4': np.array([
+        [1, 0, 0, 1, 0],
+        [1, 0, 0, 1, 0],
+        [1, 1, 1, 1, 1],
+        [0, 0, 0, 1, 0],
+        [0, 0, 0, 1, 0]
+    ]),
+    '5': np.array([
+        [1, 1, 1, 1, 1],
+        [1, 0, 0, 0, 0],
+        [1, 1, 1, 1, 0],
+        [0, 0, 0, 0, 1],
+        [1, 1, 1, 1, 0]
+    ]),
+    '6': np.array([
+        [0, 1, 1, 1, 0],
+        [1, 0, 0, 0, 0],
+        [1, 1, 1, 1, 0],
+        [1, 0, 0, 0, 1],
+        [0, 1, 1, 1, 0]
+    ]),
+    '7': np.array([
+        [1, 1, 1, 1, 1],
+        [0, 0, 0, 0, 1],
+        [0, 0, 0, 1, 0],
+        [0, 0, 1, 0, 0],
+        [0, 1, 0, 0, 0]
+    ]),
+    '8': np.array([
+        [0, 1, 1, 1, 0],
+        [1, 0, 0, 0, 1],
+        [0, 1, 1, 1, 0],
+        [1, 0, 0, 0, 1],
+        [0, 1, 1, 1, 0]
+    ]),
+    '9': np.array([
+        [0, 1, 1, 1, 0],
+        [1, 0, 0, 0, 1],
+        [0, 1, 1, 1, 1],
+        [0, 0, 0, 0, 1],
+        [0, 1, 1, 1, 0]
+    ]),
+    ' ':np.array([
+        [0,0,0,0,0],
+        [0,0,0,0,0],
+        [0,0,0,0,0],
+        [0,0,0,0,0],
+        [0,0,0,0,0]
+    ]),
+    '=': np.array([
+        [0, 0, 0, 0, 0],
+        [1, 1, 1, 1, 1],
+        [0, 0, 0, 0, 0],
+        [1, 1, 1, 1, 1],
+        [0, 0, 0, 0, 0]
+    ]),
+    '/': np.array([
+        [0, 0, 0, 0, 1],
+        [0, 0, 0, 1, 0],
+        [0, 0, 1, 0, 0],
+        [0, 1, 0, 0, 0],
+        [1, 0, 0, 0, 0]
+    ]),
+    '*': np.array([
+        [0, 1, 0, 1, 0],
+        [1, 0, 1, 0, 1],
+        [0, 1, 0, 1, 0],
+        [1, 0, 1, 0, 1],
+        [0, 1, 0, 1, 0]
+    ]),
+    '+': np.array([
+        [0, 0, 1, 0, 0],
+        [0, 0, 1, 0, 0],
+        [1, 1, 1, 1, 1],
+        [0, 0, 1, 0, 0],
+        [0, 0, 1, 0, 0]
+    ]),
+    '!': np.array([
+        [0, 1, 1, 0, 0],
+        [0, 1, 1, 0, 0],
+        [0, 1, 1, 0, 0],
+        [0, 0, 0, 0, 0],
+        [0, 1, 1, 0, 0]
     ])
+}
 
-    # Matriz de espacio entre letras
-    space = np.zeros((5, 1))
+def create_word_matrix(word, n):
+    word = word.upper()  # Convertir el string a mayúsculas
+    
+    if n < len(word) * 6 : 
+       return
 
-    # Combinamos las letras con espacios en una sola matriz
-    lucas = np.concatenate((L, space, U, space, C, space, A, space, S), axis=1)
+    # Crear la matriz para la palabra
+    matrices = [letter_matrices[letter] for letter in word]
+    space = np.zeros((5, 1))  # Espacio entre letras
+    word_matrix = np.concatenate([np.concatenate((mat, space), axis=1) for mat in matrices], axis=1)[:, :-1]
 
     # Crear una matriz n x n de ceros
     matrix = np.zeros((n, n), dtype=int)
 
-    # Colocar la palabra "Lucas" en el centro de la matriz n x n
+    # Colocar la palabra en el centro de la matriz n x n
     start_row = (n - 5) // 2
-    start_col = (n - lucas.shape[1]) // 2
+    start_col = (n - word_matrix.shape[1]) // 2
 
-    matrix[start_row:start_row+5, start_col:start_col+lucas.shape[1]] = lucas
+    matrix[start_row:start_row+5, start_col:start_col+word_matrix.shape[1]] = word_matrix
 
     return matrix
-
 
 def cuadrado(n):
     x = [[1 for _ in range(n)] for _ in range(n)]
@@ -146,5 +347,5 @@ xy = cuadrado(n)
 
 xz =cuadrado(n)
 
-yz =create_garba_matrix(n)
+yz =create_word_matrix("sol es hermosa",n)
     
