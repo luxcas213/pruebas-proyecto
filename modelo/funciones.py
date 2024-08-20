@@ -9,77 +9,31 @@ from mpl_toolkits.mplot3d import Axes3D
 from typing import List, Tuple
 from typing import List, Tuple
 
-def newcubegraph() -> Tuple[List[List[int]], List[List[int]]]:
-    vertices: List[List[int]] = [[0, 0, 0], [0, 0, 1], [0, 1, 0], [0, 1, 1], [1, 0, 0], [1, 0, 1], [1, 1, 0], [1, 1, 1]]
-    
-    connections: List[List[int]] = [[1, 2, 4], [0, 5, 3], [0, 3, 6], [2, 7, 1], [0, 5, 6], [4, 7, 1], [2, 4, 7], [3, 6, 5]]
-    
-    return connections, vertices
-
-def newpyramidgraph() -> Tuple[List[List[int]], List[List[int]]]:
-    vertices: List[List[int]] = [
-        [0, 0, 0],
-        [1, 0, 0],
-        [1, 1, 0],
-        [0, 1, 0],
-        [0.5, 0.5, 1]
-    ]
-    
-    connections: List[List[int]] = [
-        [1, 3, 4],
-        [0, 2, 4],
-        [1, 3, 4],
-        [0, 2, 4],
-        [0, 1, 2, 3]
-    ]
-    
-    return connections, vertices
-
-def newtetrahedrongraph() -> Tuple[List[List[int]], List[List[float]]]:
-    # Definimos los vértices de un tetraedro.
-    vertices: List[List[float]] = [
-        [1, 1, 1],   # Vértice 0
-        [-1, -1, 1], # Vértice 1
-        [-1, 1, -1], # Vértice 2
-        [1, -1, -1]  # Vértice 3
-    ]
-    
-    # Definimos las conexiones (aristas) entre los vértices del tetraedro.
-    connections: List[List[int]] = [
-        [1, 2, 3], # Vértice 0 se conecta con 1, 2, 3
-        [0, 2, 3], # Vértice 1 se conecta con 0, 2, 3
-        [0, 1, 3], # Vértice 2 se conecta con 0, 1, 3
-        [0, 1, 2]  # Vértice 3 se conecta con 0, 1, 2
-    ]
-    
-    return connections, vertices
-
-from typing import List, Tuple
-
-def newoctahedrongraph() -> Tuple[List[List[int]], List[List[float]]]:
-    # Definimos los vértices de un octaedro.
-    vertices: List[List[float]] = [
-        [1, 0, 0],   # Vértice 0
-        [-1, 0, 0],  # Vértice 1
-        [0, 1, 0],   # Vértice 2
-        [0, -1, 0],  # Vértice 3
-        [0, 0, 1],   # Vértice 4
-        [0, 0, -1]   # Vértice 5
-    ]
-    
-    # Definimos las conexiones (aristas) entre los vértices del octaedro.
-    connections: List[List[int]] = [
-        [1, 2, 4, 3, 5], # Vértice 0 se conecta con 1, 2, 4, 3, 5
-        [0, 2, 5, 3, 4], # Vértice 1 se conecta con 0, 2, 5, 3, 4
-        [0, 1, 4, 5, 3], # Vértice 2 se conecta con 0, 1, 4, 5, 3
-        [0, 1, 4, 5, 2], # Vértice 3 se conecta con 0, 1, 4, 5, 2
-        [0, 1, 2, 3, 5], # Vértice 4 se conecta con 0, 1, 2, 3, 5
-        [0, 1, 2, 3, 4]  # Vértice 5 se conecta con 0, 1, 2, 3, 4
-    ]
-    
-    return connections, vertices
 
 
+
+
+"""funcion para guardar el stl"""
+def save_mesh(vertices: np.ndarray, faces: np.ndarray, filename: str) -> None:
+    #armo el mesh
+    mesh_data = mesh.Mesh(np.zeros(faces.shape[0], dtype=mesh.Mesh.dtype))
+    
+    #asigno los vertices a las caras
+    for i, face in enumerate(faces):
+        for j in range(3):
+            mesh_data.vectors[i][j] = vertices[face[j]]
+    
+    #descargo el mesh en downloads
+    downloads_path = os.path.expanduser("~/Downloads")
+    full_path = os.path.join(downloads_path, filename)
+    mesh_data.save(full_path)
+    print(f'Mesh saved to {full_path}')
+
+
+
+
+
+"""funcion para generar el mesh a partir de un grafo"""
 def GenerarMeshFromGraph(graph: Tuple[List[List[int]], List[List[float]]]) -> None:
     vertices = graph[1]
     connections = graph[0]
@@ -103,37 +57,11 @@ def GenerarMeshFromGraph(graph: Tuple[List[List[int]], List[List[float]]]) -> No
     save_mesh(all_vertices, all_faces, 'output.stl')
 
 
-def create_voxel_mesh(x: int, y: int, z: int, size_x: int, size_y: int, size_z: int) -> tuple[np.ndarray, np.ndarray]:
-    # creo los vertices desde la pocicion inicial hasta el tamaño del rectángulo
-    vertices = np.array([
-        [x, y, z],
-        [x + size_x, y, z],
-        [x + size_x, y + size_y, z],
-        [x, y + size_y, z],
-        [x, y, z + size_z],
-        [x + size_x, y, z + size_z],
-        [x + size_x, y + size_y, z + size_z],
-        [x, y + size_y, z + size_z]
-    ])
-    
-    # asigno qué trios de vertices generan un triangulo de cara
-    faces = np.array([
-        [2, 1, 0],
-        [3, 2, 0],
-        [4, 5, 6],
-        [4, 6, 7],
-        [0, 1, 5],
-        [0, 5, 4],
-        [1, 2, 6],
-        [1, 6, 5],
-        [2, 3, 7],
-        [2, 7, 6],
-        [3, 0, 4],
-        [3, 4, 7]
-    ])
-    
-    return vertices, faces
 
+
+
+
+"""funcion para crear el mesh a partir de voxels"""
 def voxel_to_mesh(voxel_matrix: np.ndarray):
     
     """
@@ -184,6 +112,42 @@ def voxel_to_mesh(voxel_matrix: np.ndarray):
     
     save_mesh(all_vertices, all_faces, 'output.stl')
 
+def create_voxel_mesh(x: int, y: int, z: int, size_x: int, size_y: int, size_z: int) -> tuple[np.ndarray, np.ndarray]:
+    # creo los vertices desde la pocicion inicial hasta el tamaño del rectángulo
+    vertices = np.array([
+        [x, y, z],
+        [x + size_x, y, z],
+        [x + size_x, y + size_y, z],
+        [x, y + size_y, z],
+        [x, y, z + size_z],
+        [x + size_x, y, z + size_z],
+        [x + size_x, y + size_y, z + size_z],
+        [x, y + size_y, z + size_z]
+    ])
+    
+    # asigno qué trios de vertices generan un triangulo de cara
+    faces = np.array([
+        [2, 1, 0],
+        [3, 2, 0],
+        [4, 5, 6],
+        [4, 6, 7],
+        [0, 1, 5],
+        [0, 5, 4],
+        [1, 2, 6],
+        [1, 6, 5],
+        [2, 3, 7],
+        [2, 7, 6],
+        [3, 0, 4],
+        [3, 4, 7]
+    ])
+    
+    return vertices, faces
+
+
+
+
+
+"""codigo de creacion de matris a base del sistma monje"""
 def createMatrix(xy: List[List[int]], xz: List[List[int]], yz: List[List[int]], n: int) -> List[List[List[int]]]:
     matrix = [[[1 for _ in range(n)] for _ in range(n)] for _ in range(n)]
     for x in range(len(matrix)):
@@ -206,21 +170,23 @@ def createMatrix(xy: List[List[int]], xz: List[List[int]], yz: List[List[int]], 
     return matrix
 
 
-def save_mesh(vertices: np.ndarray, faces: np.ndarray, filename: str) -> None:
-    #armo el mesh
-    mesh_data = mesh.Mesh(np.zeros(faces.shape[0], dtype=mesh.Mesh.dtype))
-    
-    #asigno los vertices a las caras
-    for i, face in enumerate(faces):
-        for j in range(3):
-            mesh_data.vectors[i][j] = vertices[face[j]]
-    
-    #descargo el mesh en downloads
-    downloads_path = os.path.expanduser("~/Downloads")
-    full_path = os.path.join(downloads_path, filename)
-    mesh_data.save(full_path)
-    print(f'Mesh saved to {full_path}')
 
+
+
+
+"""codigos de optimizacion de matrices"""
+
+def optimizarMatrix(matrix):
+    
+    matrixAUX = copy.deepcopy(matrix)
+
+    for x in range(len(matrix)):
+        for y in range(len(matrix[0])):
+            for z in range(len(matrix[0][0])):
+                if matrix[x][y][z] == 1:
+                    if not tieneVecinoCero(x, y, z, matrix):
+                        matrixAUX[x][y][z] = 0
+    return matrixAUX
 
 def tieneVecinoCero(x, y, z, matrix):
     n = len(matrix)
@@ -237,20 +203,13 @@ def tieneVecinoCero(x, y, z, matrix):
             return True
     return False
 
-def optimizarMatrix(matrix):
-    
-    matrixAUX = copy.deepcopy(matrix)
-
-    for x in range(len(matrix)):
-        for y in range(len(matrix[0])):
-            for z in range(len(matrix[0][0])):
-                if matrix[x][y][z] == 1:
-                    if not tieneVecinoCero(x, y, z, matrix):
-                        matrixAUX[x][y][z] = 0
-    return matrixAUX
 
 
-def mostrar_voxeles(matrix, umbral=0.5):
+
+
+"""codigos de mostrar los voxels """
+
+def mostrar_voxels(matrix, umbral=0.5):
     matrix = np.array(matrix)
     
     fig = plt.figure()
@@ -267,6 +226,12 @@ def mostrar_voxeles(matrix, umbral=0.5):
 
     plt.show()
 
+
+
+
+
+
+"""codigos de matrices booleanas hardcodeadas"""
 
 def generar_matriz_booleana_aleatoria(n:int) -> np.ndarray:
     # Generar una matriz booleana 3D con valores aleatorios
@@ -288,3 +253,77 @@ def generar_piramide_booleana(n: int) -> np.ndarray:
 
 
 
+
+
+
+
+
+"""codigos de grafos hardcodeados"""
+
+def newcubegraph() -> Tuple[List[List[int]], List[List[int]]]:
+    vertices: List[List[int]] = [[0, 0, 0], [0, 0, 1], [0, 1, 0], [0, 1, 1], [1, 0, 0], [1, 0, 1], [1, 1, 0], [1, 1, 1]]
+    
+    connections: List[List[int]] = [[1, 2, 4], [0, 5, 3], [0, 3, 6], [2, 7, 1], [0, 5, 6], [4, 7, 1], [2, 4, 7], [3, 6, 5]]
+    
+    return connections, vertices
+
+def newpyramidgraph() -> Tuple[List[List[int]], List[List[int]]]:
+    vertices: List[List[int]] = [
+        [0, 0, 0],
+        [1, 0, 0],
+        [1, 1, 0],
+        [0, 1, 0],
+        [0.5, 0.5, 1]
+    ]
+    
+    connections: List[List[int]] = [
+        [1, 3, 4],
+        [0, 2, 4],
+        [1, 3, 4],
+        [0, 2, 4],
+        [0, 1, 2, 3]
+    ]
+    
+    return connections, vertices
+
+def newtetrahedrongraph() -> Tuple[List[List[int]], List[List[float]]]:
+    # Definimos los vértices de un tetraedro.
+    vertices: List[List[float]] = [
+        [1, 1, 1],   # Vértice 0
+        [-1, -1, 1], # Vértice 1
+        [-1, 1, -1], # Vértice 2
+        [1, -1, -1]  # Vértice 3
+    ]
+    
+    # Definimos las conexiones (aristas) entre los vértices del tetraedro.
+    connections: List[List[int]] = [
+        [1, 2, 3], # Vértice 0 se conecta con 1, 2, 3
+        [0, 2, 3], # Vértice 1 se conecta con 0, 2, 3
+        [0, 1, 3], # Vértice 2 se conecta con 0, 1, 3
+        [0, 1, 2]  # Vértice 3 se conecta con 0, 1, 2
+    ]
+    
+    return connections, vertices
+
+def newoctahedrongraph() -> Tuple[List[List[int]], List[List[float]]]:
+    # Definimos los vértices de un octaedro.
+    vertices: List[List[float]] = [
+        [1, 0, 0],   # Vértice 0
+        [-1, 0, 0],  # Vértice 1
+        [0, 1, 0],   # Vértice 2
+        [0, -1, 0],  # Vértice 3
+        [0, 0, 1],   # Vértice 4
+        [0, 0, -1]   # Vértice 5
+    ]
+    
+    # Definimos las conexiones (aristas) entre los vértices del octaedro.
+    connections: List[List[int]] = [
+        [2, 4, 3, 5], # Vértice 0 se conecta con 1, 2, 4, 3, 5
+        [2, 4, 3, 5], # Vértice 1 se conecta con 0, 2, 5, 3, 4
+        [0, 5, 1, 4], # Vértice 2 se conecta con 0, 1, 4, 5, 3
+        [0, 5, 1, 4], # Vértice 3 se conecta con 0, 1, 4, 5, 2
+        [0, 3, 1, 2], # Vértice 4 se conecta con 0, 1, 2, 3, 5
+        [0, 3, 1, 2]  # Vértice 5 se conecta con 0, 1, 2, 3, 4
+    ]
+    
+    return connections, vertices
