@@ -12,7 +12,7 @@ def main():
     # matrix = fn.optimizarMatrix(matrix)
     # fn.voxel_to_mesh(matrix)
     # fn.mostrar_voxeles(matrix)
-    graph=fn.newpyramidgraph()
+    graph=fn.newoctahedrongraph()
     fn.GenerarMeshFromGraph(graph)
 
 if __name__ == "__main__":
