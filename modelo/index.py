@@ -2,18 +2,18 @@ from modelo import matrix as mx
 from modelo import funciones as fn
 
 def main():
-    xy = mx.xy
-    xz = mx.xz
-    yz = mx.yz
-    n = mx.n
+    n = 100
+    xy = mx.cuadrado(n)
+    xz = mx.triangulo(n)
+    yz = mx.circulo(n)
     
-    matrix=fn.createMatrix(xy, xz, yz, n)
+    matrix=fn.generar_piramide_booleana(n)
     
-    # # matrix = fn.optimizarMatrix(matrix)
-    fn.voxel_to_mesh(matrix)
-    # #fn.mostrar_voxeles(matrix)
-    # graph=fn.newcubegraph()
-    # fn.GenerarMeshFromGraph(graph)
+    # matrix = fn.optimizarMatrix(matrix)
+    # fn.voxel_to_mesh(matrix)
+    # fn.mostrar_voxeles(matrix)
+    graph=fn.newpyramidgraph()
+    fn.GenerarMeshFromGraph(graph)
 
 if __name__ == "__main__":
     main()

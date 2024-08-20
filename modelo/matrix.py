@@ -1,6 +1,4 @@
 import numpy as np
-n=200
-matrix = [[[1 for _ in range(n)] for _ in range(n)] for _ in range(n)]
 
 
 letter_matrices = {
@@ -343,9 +341,3 @@ def triangulo(n):
                 x[i][j] = 1
     return x
 
-xy = cuadrado(n)
-
-xz =cuadrado(n)
-
-yz =create_word_matrix("benjy se la come",n)
-    

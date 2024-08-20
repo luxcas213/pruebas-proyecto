@@ -7,29 +7,57 @@ import copy
 import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
 from typing import List, Tuple
+from typing import List, Tuple
+
+def newcubegraph() -> Tuple[List[List[int]], List[List[int]]]:
+    vertices: List[List[int]] = [[0, 0, 0], [0, 0, 1], [0, 1, 0], [0, 1, 1], [1, 0, 0], [1, 0, 1], [1, 1, 0], [1, 1, 1]]
+    
+    connections: List[List[int]] = [[1, 2, 4], [0, 5, 3], [0, 3, 6], [2, 7, 1], [0, 5, 6], [4, 7, 1], [2, 4, 7], [3, 6, 5]]
+    
+    return connections, vertices
+
+def newpyramidgraph() -> Tuple[List[List[int]], List[List[int]]]:
+    vertices: List[List[int]] = [
+        [0, 0, 0],
+        [1, 0, 0],
+        [1, 1, 0],
+        [0, 1, 0],
+        [0.5, 0.5, 1]
+    ]
+    
+    connections: List[List[int]] = [
+        [1, 3, 4],
+        [0, 2, 4],
+        [1, 3, 4],
+        [0, 2, 4],
+        [0, 1, 2, 3]
+    ]
+    
+    return connections, vertices
 
 
-def newcubegraph() -> Tuple[List[List[int]] , List[Tuple[int, int, int]]]:
-    vertices=[[0,0,0],[0,0,1],[0,1,0],[0,1,1],[1,0,0],[1,0,1],[1,1,0],[1,1,1]]
-
-    conecciones=[[2,3,5],[1,6,4],[1,4,7],[3,8,3],[1,6,7],[2,5,8],[3,5,8],[4,7,6]]
-
-    return conecciones,vertices
-
-
-
-
-def GenerarMeshFromGraph(graph):
+def GenerarMeshFromGraph(graph: Tuple[List[List[int]], List[List[int]]]) -> None:
     vertices = graph[1]
     connections = graph[0]
-    
-    all_vertices = []
     all_faces = []
+    
+    for i in range(len(vertices)):
+        con = connections[i] 
+        num_con = len(con)
+        for j in range(num_con):
+            v1 = i
+            v2 = con[j]
+            v3 = con[((j + 1) % num_con)]
+            #checkeo de que no exista esta cara
+            if [v1, v2, v3] not in all_faces and [v3, v2, v1] not in all_faces:
+                all_faces.append([v1, v2, v3])
+            
     
     all_faces = np.array(all_faces)
     all_vertices = np.array(vertices)
     
     save_mesh(all_vertices, all_faces, 'output.stl')
+
 
 def create_voxel_mesh(x: int, y: int, z: int, size_x: int, size_y: int, size_z: int) -> tuple[np.ndarray, np.ndarray]:
     # creo los vertices desde la pocicion inicial hasta el tamaño del rectángulo
@@ -73,9 +101,9 @@ def voxel_to_mesh(voxel_matrix: np.ndarray):
     all_vertices = []
     all_faces = []
     n = voxel_matrix.shape[0]
-    for x in range(n):
-        for y in range(n):
-            for z in range(n):
+    for x in range(len(voxel_matrix)):
+        for y in range(len(voxel_matrix[0])):
+            for z in range(len(voxel_matrix[0][0])):
                 if voxel_matrix[x, y, z] and not voxel_procesed[x, y, z]:
                     #print(f'Processing voxel at ({x}, {y}, {z})')
                     voxel_procesed[x][y][z] = True
@@ -114,22 +142,22 @@ def voxel_to_mesh(voxel_matrix: np.ndarray):
 
 def createMatrix(xy: List[List[int]], xz: List[List[int]], yz: List[List[int]], n: int) -> List[List[List[int]]]:
     matrix = [[[1 for _ in range(n)] for _ in range(n)] for _ in range(n)]
-    for x in range(n):
-        for y in range(n):
+    for x in range(len(matrix)):
+        for y in range(len(matrix[0])):
             if xy[x][y] == 0:
-                for z in range(n):
+                for z in range(len(matrix[0][0])):
                     matrix[x][y][z] = 0
 
-    for x in range(n):
-        for z in range(n):
+    for x in range(len(matrix)):
+        for z in range(len(matrix[0][0])):
             if xz[x][z] == 0:
-                for y in range(n):
+                for y in range(len(matrix[0])):
                     matrix[x][y][z] = 0
 
-    for y in range(n):
-        for z in range(n):
+    for y in range(len(matrix[0])):
+        for z in range(len(matrix[0][0])):
             if yz[y][z] == 0:
-                for x in range(n):
+                for x in range(len(matrix)):
                     matrix[x][y][z] = 0
     return matrix
 
@@ -166,11 +194,12 @@ def tieneVecinoCero(x, y, z, matrix):
     return False
 
 def optimizarMatrix(matrix):
-    n = len(matrix)
+    
     matrixAUX = copy.deepcopy(matrix)
-    for x in range(n):
-        for y in range(n):
-            for z in range(n):
+
+    for x in range(len(matrix)):
+        for y in range(len(matrix[0])):
+            for z in range(len(matrix[0][0])):
                 if matrix[x][y][z] == 1:
                     if not tieneVecinoCero(x, y, z, matrix):
                         matrixAUX[x][y][z] = 0
@@ -200,17 +229,18 @@ def generar_matriz_booleana_aleatoria(n:int) -> np.ndarray:
     matriz = np.random.choice([True, False], size=(n, n, n))
     return matriz
 
-def generar_prisma_triangular(n:int) -> np.ndarray:
-    # Crear una matriz booleana 3D de n*n*n inicializada a False
+def generar_piramide_booleana(n: int) -> np.ndarray:
+    # Inicializar una matriz 3D de False
     matriz = np.zeros((n, n, n), dtype=bool)
 
-    # Definir las dimensiones del prisma triangular
-    for z in range(n):  # Extender el triángulo a lo largo del eje Z
-        for x in range(n):
-            for y in range(n):
-                # Condición para un triángulo rectángulo en la mitad inferior del plano XY
-                if y < n - x:
-                    matriz[x, y, z] = True
+    # Rellenar la pirámide en la matriz
+    for i in range(n):
+        nivel = n - i
+        start = i
+        end = n - i
+        matriz[i, start:end, start:end] = True
 
     return matriz
+
+
 
