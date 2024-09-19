@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">  
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>garba es un genio</title>
+    <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+    <h1>proyectooooooo</h1>
+    <form id="formulario">
+        <label for="size"> Size de la matriz (n x n):</label>
+        <input type="number" id="size" name="size" min="1" max="10" required>
+        <div class="wrapper">
+            <button type="button" onclick="crearMatrices()">
+                Crear Matrices
+            </button>
+        </div>
+        <h2>Matriz 1</h2>
+        <div id="matriz1"></div>
+        
+        <h2>Matriz 2</h2>
+        <div id="matriz2"></div>
+        
+        <h2>Matriz 3</h2>
+        <div id="matriz3"></div>
+        <div class="botones-container">
+            <div class="wrapper">
+                <button type="button" onclick="enviarDatos()">
+                    Enviar
+                </button>
+            </div>
+            <div class="wrapper">
+                <button type="button" onclick="descargarSTL()">
+                    Descargar STL
+                </button>
+            </div>
+        </div>
+    </form>
+
+    <h2 class="textomedio">Visor STL</h2>
+    <div id="viewer"></div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/STLLoader.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+    <script src="/static/script.js"></script>
+</body>
+</html>

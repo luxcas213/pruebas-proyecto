@@ -1,0 +1,3 @@
+entorno\Scripts\activate
+
+uvicorn app:app --reload
